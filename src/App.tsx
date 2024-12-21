@@ -1,7 +1,15 @@
+import Calculator from "./components/Calculator";
+import Logo from "./ui/Logo";
+
 function App() {
   return (
-    <main className="grid min-h-screen place-items-center bg-cyan-300">
-      <h1 className="text-5xl font-bold text-cyan-800">Hello, World!</h1>
+    <main className="flex min-h-screen bg-cyan-300">
+      <div className="grid w-full grid-rows-[144px_auto]">
+        <div className="flex items-center justify-center">
+          <Logo />
+        </div>
+        <Calculator />
+      </div>
     </main>
   );
 }

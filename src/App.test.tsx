@@ -5,6 +5,6 @@ describe("App", () => {
   it("renders", () => {
     render(<App />);
 
-    expect(screen.queryByText("Hello, World!")).toBeVisible();
+    expect(screen.queryByAltText("Splitter logo")).toBeVisible();
   });
 });
