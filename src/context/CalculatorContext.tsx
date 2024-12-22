@@ -46,7 +46,7 @@ function reducer(state: typeof initialState, action: CalculatorAction) {
   }
 }
 
-export const CalculatorContext = createContext({} as CalculatorContextValue);
+const CalculatorContext = createContext({} as CalculatorContextValue);
 
 export function CalculatorContextProvider({
   children,
@@ -63,5 +63,6 @@ export function CalculatorContextProvider({
 }
 
 export function useCalculator() {
-  return useContext(CalculatorContext);
+  const context = useContext(CalculatorContext);
+  return context;
 }

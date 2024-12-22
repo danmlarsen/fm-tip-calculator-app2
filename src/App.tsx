@@ -1,4 +1,5 @@
 import Calculator from "./components/Calculator";
+import { CalculatorContextProvider } from "./context/CalculatorContext";
 import Logo from "./ui/Logo";
 
 function App() {
@@ -8,7 +9,9 @@ function App() {
         <div className="flex items-center justify-center">
           <Logo />
         </div>
-        <Calculator />
+        <CalculatorContextProvider>
+          <Calculator />
+        </CalculatorContextProvider>
       </div>
     </main>
   );

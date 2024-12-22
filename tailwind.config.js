@@ -17,6 +17,7 @@ export default {
           850: "#0D686D",
           900: "hsl(183, 100%, 15%)",
         },
+        red: "#E17457",
       },
     },
     fontFamily: {

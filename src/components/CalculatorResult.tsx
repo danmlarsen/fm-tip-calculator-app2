@@ -1,19 +1,25 @@
-import { useCalculator } from "../context/CalculatorContext";
 import Button from "../ui/Button";
 
-export default function CalculatorResult() {
-  const { state, dispatch } = useCalculator();
-
+export default function CalculatorResult({
+  tipAmount,
+  totalAmount,
+  onReset,
+}: {
+  tipAmount: number;
+  totalAmount: number;
+  onReset: () => void;
+}) {
   return (
     <div className="space-y-8">
       <div className="space-y-5">
-        <CalculatorResultItem label="Tip Amount" value={state.tipAmount} />
-        <CalculatorResultItem label="Total" value={state.total} />
+        <CalculatorResultItem label="Tip Amount" value={tipAmount} />
+        <CalculatorResultItem label="Total" value={totalAmount} />
       </div>
       <div>
         <Button
           className="w-full bg-cyan-500 uppercase text-cyan-900"
-          onClick={() => dispatch({ type: "reset" })}
+          onClick={onReset}
+          type="button"
         >
           Reset
         </Button>

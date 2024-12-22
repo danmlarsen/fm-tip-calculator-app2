@@ -1,12 +1,61 @@
 import * as React from "react";
 import { twMerge } from "tailwind-merge";
+import { Slot } from "@radix-ui/react-slot";
 
-export function Form() {
-  return <div>form</div>;
+import {
+  Controller,
+  ControllerProps,
+  FieldPath,
+  FieldValues,
+  FormProvider,
+  useFormContext,
+} from "react-hook-form";
+
+export const Form = FormProvider;
+
+type FormFieldContextValue<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = {
+  name: TName;
+};
+
+const FormFieldContext = React.createContext<FormFieldContextValue>(
+  {} as FormFieldContextValue,
+);
+
+export function FormField<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({ ...props }: ControllerProps<TFieldValues, TName>) {
+  return (
+    <FormFieldContext.Provider value={{ name: props.name }}>
+      <Controller {...props} />
+    </FormFieldContext.Provider>
+  );
 }
 
-export function FormField() {
-  return <div>form field</div>;
+export function useFormField() {
+  const fieldContext = React.useContext(FormFieldContext);
+  const itemContext = React.useContext(FormitemContext);
+  const { getFieldState, formState } = useFormContext();
+
+  const fieldState = getFieldState(fieldContext.name, formState);
+
+  if (!fieldContext) {
+    throw new Error("useFormField should be used within <FormField>");
+  }
+
+  const { id } = itemContext;
+
+  return {
+    id,
+    name: fieldContext.name,
+    formItemId: `${id}-form-item`,
+    formDescriptionId: `${id}-form-item-description`,
+    formMessageId: `${id}-form-item-message`,
+    ...fieldState,
+  };
 }
 
 type FormItemContextValue = {
@@ -36,22 +85,41 @@ interface TFormLabel extends React.ComponentProps<"label"> {
 }
 
 export function FormLabel({ children, className, ...props }: TFormLabel) {
-  const { id } = React.useContext(FormitemContext);
+  const { formItemId } = useFormField();
 
   return (
-    <label className={twMerge("block", className)} htmlFor={id} {...props}>
+    <label
+      className={twMerge("block", className)}
+      htmlFor={formItemId}
+      {...props}
+    >
       {children}
     </label>
   );
 }
 
-export function FormControl({
-  children,
-  ...props
-}: {
-  children: React.ReactElement;
-}) {
-  const { id } = React.useContext(FormitemContext);
+export function FormControl({ ...props }) {
+  const { formItemId, error } = useFormField();
 
-  return React.cloneElement(children, { id, ...props });
+  return <Slot id={formItemId} aria-invalid={!!error} {...props} />;
+}
+
+interface TFormMessage extends React.ComponentProps<"p"> {
+  children?: React.ReactNode;
+  className?: string;
+}
+
+export function FormMessage({ children, className, ...props }: TFormMessage) {
+  const { error, formMessageId } = useFormField();
+  const body = error ? String(error?.message) : children;
+
+  if (!body) {
+    return null;
+  }
+
+  return (
+    <p id={formMessageId} className={twMerge("text-red", className)} {...props}>
+      {body}
+    </p>
+  );
 }
