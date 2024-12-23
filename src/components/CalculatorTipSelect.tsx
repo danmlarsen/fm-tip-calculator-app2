@@ -34,7 +34,7 @@ export default function CalculatorTipSelect({
                   key={val}
                   className={`${val === field.value ? "bg-cyan-500 text-cyan-900" : ""}`}
                   onClick={() => {
-                    form.setValue("tipPercent", val);
+                    form.setValue("tipPercent", val, { shouldDirty: true });
                     form.setValue("customTipPercent", "");
                     triggerSubmit();
                   }}
@@ -47,12 +47,23 @@ export default function CalculatorTipSelect({
               <FormField
                 control={form.control}
                 name="customTipPercent"
-                render={({ field }) => {
+                rules={{
+                  min: 0,
+                  max: 100,
+                }}
+                render={({ field, fieldState }) => {
+                  field.onChange = (e) => {
+                    form.setValue("tipPercent", 0);
+                    form.setValue("customTipPercent", e.target.value, {
+                      shouldDirty: true,
+                    });
+                  };
                   return (
                     <FormControl>
                       <Input
                         className="placeholder:text-cyan-800"
                         placeholder="Custom"
+                        invalid={fieldState.invalid}
                         {...field}
                       />
                     </FormControl>

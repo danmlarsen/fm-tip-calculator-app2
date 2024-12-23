@@ -19,10 +19,11 @@ export default function CalculatorResult({
       </div>
       <div>
         <Button
-          className="w-full bg-cyan-500 uppercase text-cyan-900"
+          className="w-full bg-cyan-500 uppercase text-cyan-900 md:text-xl"
           onClick={onReset}
           type="reset"
           disabled={!isDirty}
+          name="Reset"
         >
           Reset
         </Button>

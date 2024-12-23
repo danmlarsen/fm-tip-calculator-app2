@@ -29,7 +29,7 @@ export default function CalculatorForm({
           required: `Can't be zero`,
           pattern: {
             value: /^(?!0+$|0+\.0+$)\d+(\.\d+)?$/,
-            message: "Can't be zero",
+            message: "Must be a positive number",
           },
         }}
         render={({ field, fieldState }) => {
@@ -49,7 +49,6 @@ export default function CalculatorForm({
                 <FormControl>
                   <Input
                     placeholder="0"
-                    isSubmitted={form.formState.isSubmitted}
                     invalid={fieldState.invalid}
                     {...field}
                   />
@@ -67,7 +66,7 @@ export default function CalculatorForm({
         name="numPeople"
         rules={{
           required: `Can't be zero`,
-          pattern: { value: /^(?!0+$)\d+$/, message: "Can't be zero" },
+          pattern: { value: /^(?!0+$)\d+$/, message: "Must be 1 or more" },
         }}
         render={({ field, fieldState }) => {
           return (
@@ -85,7 +84,6 @@ export default function CalculatorForm({
                 <FormControl>
                   <Input
                     placeholder="0"
-                    isSubmitted={form.formState.isSubmitted}
                     invalid={fieldState.invalid}
                     {...field}
                   />

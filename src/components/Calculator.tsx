@@ -61,7 +61,7 @@ export default function Calculator() {
   };
 
   return (
-    <div className="grid md:min-h-[480px]">
+    <div className="grid md:min-h-[30rem]">
       <Form {...form}>
         <form
           className="grid"
