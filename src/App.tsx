@@ -1,17 +1,14 @@
 import Calculator from "./components/Calculator";
-import { CalculatorContextProvider } from "./context/CalculatorContext";
 import Logo from "./ui/Logo";
 
 function App() {
   return (
-    <main className="flex min-h-screen bg-cyan-300">
-      <div className="grid w-full grid-rows-[144px_auto]">
+    <main className="flex min-h-screen bg-cyan-300 md:items-center md:px-6">
+      <div className="mx-auto grid w-full max-w-[920px] grid-rows-[144px_auto]">
         <div className="flex items-center justify-center">
           <Logo />
         </div>
-        <CalculatorContextProvider>
-          <Calculator />
-        </CalculatorContextProvider>
+        <Calculator />
       </div>
     </main>
   );

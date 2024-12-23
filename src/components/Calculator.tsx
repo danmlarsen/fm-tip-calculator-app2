@@ -3,10 +3,15 @@ import CalculatorForm from "./CalculatorForm";
 import CalculatorResult from "./CalculatorResult";
 import { Form } from "../ui/Form";
 import { useState } from "react";
+import {
+  calcTipAmountPerPerson,
+  calcTotalAmountPerPerson,
+} from "../utils/utils";
 
 export interface IFormInput {
   bill: string;
   tipPercent: number;
+  customTipPercent: string;
   numPeople: string;
 }
 
@@ -15,6 +20,7 @@ export default function Calculator() {
     defaultValues: {
       bill: "",
       tipPercent: 0,
+      customTipPercent: "",
       numPeople: "",
     },
   });
@@ -25,10 +31,24 @@ export default function Calculator() {
   const handleSubmit: SubmitHandler<IFormInput> = ({
     bill,
     tipPercent,
+    customTipPercent,
     numPeople,
   }) => {
-    const tipAmount = (+bill * (tipPercent / 100)) / +numPeople;
-    const totalAmount = +bill / +numPeople + tipAmount;
+    const activeTipPercent = customTipPercent
+      ? Number(customTipPercent)
+      : tipPercent;
+
+    const tipAmount = calcTipAmountPerPerson({
+      bill: Number(bill),
+      tipPercent: activeTipPercent,
+      numPeople: Number(numPeople),
+    });
+
+    const totalAmount = calcTotalAmountPerPerson({
+      bill: Number(bill),
+      numPeople: Number(numPeople),
+      tipAmount,
+    });
 
     setTotalAmount(totalAmount);
     setTipAmount(tipAmount);
@@ -41,21 +61,28 @@ export default function Calculator() {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} noValidate>
-        <div className="flex w-full max-w-[920px] flex-col gap-8 rounded-t-3xl bg-white px-6 py-8">
-          <div>
-            <CalculatorForm form={form} />
+    <div className="grid md:min-h-[480px]">
+      <Form {...form}>
+        <form
+          className="grid"
+          onSubmit={form.handleSubmit(handleSubmit)}
+          noValidate
+        >
+          <div className="grid w-full gap-8 rounded-t-3xl bg-white px-6 py-8 md:grid-cols-2 md:gap-12 md:rounded-3xl md:p-8 md:pl-12">
+            <div className="flex items-center justify-center">
+              <CalculatorForm form={form} handleSubmit={handleSubmit} />
+            </div>
+            <div className="grid rounded-2xl bg-cyan-900 p-6 text-white md:p-10">
+              <CalculatorResult
+                tipAmount={tipAmount}
+                totalAmount={totalAmount}
+                onReset={handleReset}
+                isDirty={form.formState.isDirty}
+              />
+            </div>
           </div>
-          <div className="rounded-2xl bg-cyan-900 p-6 text-white">
-            <CalculatorResult
-              tipAmount={tipAmount}
-              totalAmount={totalAmount}
-              onReset={handleReset}
-            />
-          </div>
-        </div>
-      </form>
-    </Form>
+        </form>
+      </Form>
+    </div>
   );
 }

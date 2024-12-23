@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form";
+import { SubmitHandler, UseFormReturn } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -15,8 +15,10 @@ import { IFormInput } from "./Calculator";
 
 export default function CalculatorForm({
   form,
+  handleSubmit,
 }: {
   form: UseFormReturn<IFormInput>;
+  handleSubmit: SubmitHandler<IFormInput>;
 }) {
   return (
     <div className="space-y-8 text-cyan-800">
@@ -47,7 +49,7 @@ export default function CalculatorForm({
                 <FormControl>
                   <Input
                     placeholder="0"
-                    isTouched={fieldState.isTouched}
+                    isSubmitted={form.formState.isSubmitted}
                     invalid={fieldState.invalid}
                     {...field}
                   />
@@ -58,7 +60,7 @@ export default function CalculatorForm({
         }}
       />
 
-      <CalculatorTipSelect form={form} />
+      <CalculatorTipSelect form={form} handleSubmit={handleSubmit} />
 
       <FormField
         control={form.control}
@@ -83,7 +85,7 @@ export default function CalculatorForm({
                 <FormControl>
                   <Input
                     placeholder="0"
-                    isTouched={fieldState.isTouched}
+                    isSubmitted={form.formState.isSubmitted}
                     invalid={fieldState.invalid}
                     {...field}
                   />
@@ -93,6 +95,8 @@ export default function CalculatorForm({
           );
         }}
       />
+
+      <button type="submit" className="hidden" />
     </div>
   );
 }
