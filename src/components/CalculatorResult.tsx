@@ -1,4 +1,14 @@
+import { motion, AnimatePresence } from "motion/react";
+
 import Button from "../ui/Button";
+
+const containerVariant = {
+  show: {
+    transition: {
+      staggerChildren: 0.25,
+    },
+  },
+};
 
 export default function CalculatorResult({
   tipAmount,
@@ -13,10 +23,20 @@ export default function CalculatorResult({
 }) {
   return (
     <div className="flex flex-col justify-between gap-8">
-      <div className="space-y-5 md:space-y-8">
-        <CalculatorResultItem label="Tip Amount" value={tipAmount} />
-        <CalculatorResultItem label="Total" value={totalAmount} />
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          variants={containerVariant}
+          key={`${tipAmount}-${totalAmount}`}
+          initial="hide"
+          animate="show"
+          exit="hide"
+          className="space-y-5 md:space-y-8"
+        >
+          <CalculatorResultItem label="Tip Amount" value={tipAmount} />
+          <CalculatorResultItem label="Total" value={totalAmount} />
+        </motion.div>
+      </AnimatePresence>
+
       <div>
         <Button
           className="w-full bg-cyan-500 uppercase text-cyan-900 md:text-xl"
@@ -32,6 +52,11 @@ export default function CalculatorResult({
   );
 }
 
+const childVariant = {
+  show: { opacity: 1 },
+  hide: { opacity: 0 },
+};
+
 function CalculatorResultItem({
   label,
   value,
@@ -43,11 +68,15 @@ function CalculatorResultItem({
     <div className="flex items-center justify-between">
       <div className="flex flex-col">
         <span>{label}</span>
-        <span className="text-[13px] text-cyan-800">/ person</span>
+        <span className="text-[0.8125rem] text-cyan-800">/ person</span>
       </div>
-      <div className="text-3xl text-cyan-500 md:text-5xl">
+
+      <motion.div
+        variants={childVariant}
+        className="text-3xl text-cyan-500 md:text-5xl"
+      >
         {`$${value.toFixed(2).toString()}`}
-      </div>
+      </motion.div>
     </div>
   );
 }
