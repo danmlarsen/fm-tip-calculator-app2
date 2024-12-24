@@ -61,14 +61,14 @@ export default function Calculator() {
   };
 
   return (
-    <div className="grid md:min-h-[30rem]">
+    <div className="grid rounded-t-3xl bg-white px-6 py-8 shadow-[0_2rem_2.6875rem_0_rgba(79,166,175,0.207)] md:min-h-[30rem] md:rounded-3xl md:p-8 md:pl-12">
       <Form {...form}>
         <form
           className="grid"
           onSubmit={form.handleSubmit(handleSubmit)}
           noValidate
         >
-          <div className="grid w-full gap-8 rounded-t-3xl bg-white px-6 py-8 md:grid-cols-2 md:gap-12 md:rounded-3xl md:p-8 md:pl-12">
+          <div className="grid gap-8 md:grid-cols-2 md:gap-12">
             <div className="flex items-center justify-center">
               <CalculatorForm form={form} handleSubmit={handleSubmit} />
             </div>
