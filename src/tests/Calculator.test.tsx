@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Calculator from "../components/Calculator";
 
@@ -57,8 +57,10 @@ describe("Calculator form component", () => {
     await user.type(screen.getByLabelText("Number of People"), "2");
     await user.click(screen.getByText("10%"));
 
-    expect(screen.getByText("$5.00")).toBeVisible();
-    expect(screen.getByText("$55.00")).toBeVisible();
+    waitFor(() => {
+      expect(screen.getByText("$5.00")).toBeVisible();
+      expect(screen.getByText("$55.00")).toBeVisible();
+    });
   });
 
   it("should display correctly calculated values if custom tip % is provided", async () => {
@@ -67,8 +69,10 @@ describe("Calculator form component", () => {
     await user.type(screen.getByPlaceholderText("Custom"), "10");
     await user.keyboard("{Enter}");
 
-    expect(screen.getByText("$5.00")).toBeVisible();
-    expect(screen.getByText("$55.00")).toBeVisible();
+    waitFor(() => {
+      expect(screen.getByText("$5.00")).toBeVisible();
+      expect(screen.getByText("$55.00")).toBeVisible();
+    });
   });
 
   it("should reset entire form when reset is clicked", async () => {
