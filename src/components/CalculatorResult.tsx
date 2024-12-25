@@ -30,7 +30,7 @@ export default function CalculatorResult({
           initial="hide"
           animate="show"
           exit="hide"
-          className="space-y-5 md:space-y-8"
+          className="space-y-5 md:space-y-6"
         >
           <CalculatorResultItem label="Tip Amount" value={tipAmount} />
           <CalculatorResultItem label="Total" value={totalAmount} />
@@ -74,6 +74,7 @@ function CalculatorResultItem({
       <motion.div
         variants={childVariant}
         className="text-3xl text-cyan-500 md:text-5xl"
+        aria-label={label}
       >
         {`$${value.toFixed(2).toString()}`}
       </motion.div>

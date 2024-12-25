@@ -76,9 +76,13 @@ describe("Calculator form component", () => {
     );
     await user.click(screen.getByText(validInputs.tipPercent));
 
-    waitFor(() => {
-      expect(screen.getByText(`$${calculatedTipAmount}`)).toBeVisible();
-      expect(screen.getByText(`$${calculatedTotalAmount}`)).toBeVisible();
+    await waitFor(() => {
+      expect(screen.getByLabelText("Tip Amount").textContent).toEqual(
+        `$${calculatedTipAmount.toFixed(2)}`,
+      );
+      expect(screen.getByLabelText("Total").textContent).toEqual(
+        `$${calculatedTotalAmount.toFixed(2)}`,
+      );
     });
   });
 
@@ -94,9 +98,13 @@ describe("Calculator form component", () => {
     );
     await user.keyboard("{Enter}");
 
-    waitFor(() => {
-      expect(screen.getByText(`$${calculatedTipAmount}`)).toBeVisible();
-      expect(screen.getByText(`$${calculatedTotalAmount}`)).toBeVisible();
+    await waitFor(() => {
+      expect(screen.getByLabelText("Tip Amount").textContent).toEqual(
+        `$${calculatedTipAmount.toFixed(2)}`,
+      );
+      expect(screen.getByLabelText("Total").textContent).toEqual(
+        `$${calculatedTotalAmount.toFixed(2)}`,
+      );
     });
   });
 
