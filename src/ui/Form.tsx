@@ -74,7 +74,7 @@ export function FormItem({ className, ...props }: TFormItem) {
 
   return (
     <FormitemContext.Provider value={{ id }}>
-      <div className={twMerge("space-y-2", className)} {...props} />
+      <div className={twMerge("space-y-[0.375rem]", className)} {...props} />
     </FormitemContext.Provider>
   );
 }

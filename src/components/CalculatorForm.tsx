@@ -21,7 +21,7 @@ export default function CalculatorForm({
   handleSubmit: SubmitHandler<IFormInput>;
 }) {
   return (
-    <div className="space-y-8 text-cyan-800">
+    <div className="space-y-8 text-cyan-800 md:space-y-10">
       <FormField
         control={form.control}
         name="bill"

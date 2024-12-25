@@ -68,7 +68,7 @@ export default function Calculator() {
           onSubmit={form.handleSubmit(handleSubmit)}
           noValidate
         >
-          <div className="grid gap-8 md:grid-cols-2 md:gap-12">
+          <div className="grid gap-8 md:grid-cols-[auto_25.8125rem] md:gap-12">
             <div className="flex items-center justify-center">
               <CalculatorForm form={form} handleSubmit={handleSubmit} />
             </div>

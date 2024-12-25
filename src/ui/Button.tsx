@@ -10,7 +10,7 @@ export default function Button({ children, className, ...props }: TButton) {
   return (
     <button
       className={twMerge(
-        "disabled:bg-cyan-850 inline-flex min-h-12 items-center justify-center rounded-md bg-cyan-900 px-4 text-white transition duration-300 hover:bg-cyan-400 hover:text-cyan-900 focus:outline-none focus:ring focus:ring-cyan-500 disabled:text-cyan-900 md:text-2xl",
+        "disabled:bg-cyan-850 inline-flex min-h-12 items-center justify-center rounded-md bg-cyan-900 px-4 text-white transition duration-300 hover:bg-cyan-400 hover:text-cyan-900 focus:outline-none focus:ring focus:ring-cyan-500 disabled:text-cyan-900/35 md:text-2xl",
         className,
       )}
       {...props}

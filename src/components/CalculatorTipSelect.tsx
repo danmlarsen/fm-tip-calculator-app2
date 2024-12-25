@@ -26,7 +26,7 @@ export default function CalculatorTipSelect({
       name="tipPercent"
       render={({ field }) => {
         return (
-          <FormItem>
+          <FormItem className="space-y-4">
             <FormLabel>Select Tip %</FormLabel>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
               {tipValues.map((val) => (

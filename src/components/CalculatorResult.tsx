@@ -65,7 +65,7 @@ function CalculatorResultItem({
   value: number;
 }) {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex min-h-12 items-center justify-between md:min-h-[4.4375rem]">
       <div className="flex flex-col">
         <span>{label}</span>
         <span className="text-[0.8125rem] text-cyan-800">/ person</span>
