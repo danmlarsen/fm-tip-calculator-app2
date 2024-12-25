@@ -4,10 +4,23 @@ import Calculator from "../components/Calculator";
 
 import * as utils from "../utils/utils";
 
-vi.spyOn(utils, "calcTipAmountPerPerson").mockImplementation(() => 5);
-vi.spyOn(utils, "calcTotalAmountPerPerson").mockImplementation(() => 55);
-
 describe("Calculator form component", () => {
+  const validInputs = {
+    bill: "100",
+    numPeople: "2",
+    tipPercent: "10%",
+    customTipPercent: "10",
+  };
+
+  const calculatedTipAmount = 5;
+  const calculatedTotalAmount = 55;
+
+  vi.spyOn(utils, "calcTipAmountPerPerson").mockImplementation(
+    () => calculatedTipAmount,
+  );
+  vi.spyOn(utils, "calcTotalAmountPerPerson").mockImplementation(
+    () => calculatedTotalAmount,
+  );
   const user = userEvent.setup();
 
   beforeEach(() => {
@@ -21,7 +34,7 @@ describe("Calculator form component", () => {
   });
 
   it("should display validation errors if required values is not provided", async () => {
-    await user.click(screen.getByText("10%"));
+    await user.click(screen.getByText(validInputs.tipPercent));
 
     expect(screen.getAllByText("Can't be zero").length).toBe(2);
   });
@@ -29,56 +42,71 @@ describe("Calculator form component", () => {
   it("should display validation errors if invalid values is provided", async () => {
     await user.type(screen.getByLabelText("Bill"), "invalid");
     await user.type(screen.getByLabelText("Number of People"), "0.1");
-    await user.click(screen.getByText("10%"));
+    await user.click(screen.getByText(validInputs.tipPercent));
 
     expect(screen.getByText("Must be a positive number")).toBeVisible();
     expect(screen.getByText("Must be 1 or more")).toBeVisible();
   });
 
   it("should call calcTipAmountPerPerson and calcTotalAmountPerPerson with correct values when valid form is submitted", async () => {
-    await user.type(screen.getByLabelText("Bill"), "100");
-    await user.type(screen.getByLabelText("Number of People"), "2");
-    await user.click(screen.getByText("10%"));
+    await user.type(screen.getByLabelText("Bill"), validInputs.bill);
+    await user.type(
+      screen.getByLabelText("Number of People"),
+      validInputs.numPeople,
+    );
+    await user.click(screen.getByText(validInputs.tipPercent));
 
     expect(utils.calcTipAmountPerPerson).toHaveBeenCalledWith({
-      bill: 100,
-      numPeople: 2,
-      tipPercent: 10,
+      bill: Number(validInputs.bill),
+      numPeople: Number(validInputs.numPeople),
+      tipPercent: Number(validInputs.tipPercent.slice(0, -1)),
     });
     expect(utils.calcTotalAmountPerPerson).toHaveBeenCalledWith({
-      bill: 100,
-      numPeople: 2,
-      tipAmount: 5.0,
+      bill: Number(validInputs.bill),
+      numPeople: Number(validInputs.numPeople),
+      tipAmount: calculatedTipAmount,
     });
   });
 
   it("should display correctly calculated values after submit", async () => {
-    await user.type(screen.getByLabelText("Bill"), "100");
-    await user.type(screen.getByLabelText("Number of People"), "2");
-    await user.click(screen.getByText("10%"));
+    await user.type(screen.getByLabelText("Bill"), validInputs.bill);
+    await user.type(
+      screen.getByLabelText("Number of People"),
+      validInputs.numPeople,
+    );
+    await user.click(screen.getByText(validInputs.tipPercent));
 
     waitFor(() => {
-      expect(screen.getByText("$5.00")).toBeVisible();
-      expect(screen.getByText("$55.00")).toBeVisible();
+      expect(screen.getByText(`$${calculatedTipAmount}`)).toBeVisible();
+      expect(screen.getByText(`$${calculatedTotalAmount}`)).toBeVisible();
     });
   });
 
   it("should display correctly calculated values if custom tip % is provided", async () => {
-    await user.type(screen.getByLabelText("Bill"), "100");
-    await user.type(screen.getByLabelText("Number of People"), "2");
-    await user.type(screen.getByPlaceholderText("Custom"), "10");
+    await user.type(screen.getByLabelText("Bill"), validInputs.bill);
+    await user.type(
+      screen.getByLabelText("Number of People"),
+      validInputs.numPeople,
+    );
+    await user.type(
+      screen.getByPlaceholderText("Custom"),
+      validInputs.customTipPercent,
+    );
     await user.keyboard("{Enter}");
 
     waitFor(() => {
-      expect(screen.getByText("$5.00")).toBeVisible();
-      expect(screen.getByText("$55.00")).toBeVisible();
+      expect(screen.getByText(`$${calculatedTipAmount}`)).toBeVisible();
+      expect(screen.getByText(`$${calculatedTotalAmount}`)).toBeVisible();
     });
   });
 
   it("should reset entire form when reset is clicked", async () => {
-    await user.type(screen.getByLabelText("Bill"), "100");
-    await user.type(screen.getByLabelText("Number of People"), "2");
-    await user.click(screen.getByText("10%"));
+    await user.type(screen.getByLabelText("Bill"), validInputs.bill);
+    await user.type(
+      screen.getByLabelText("Number of People"),
+      validInputs.numPeople,
+    );
+    await user.click(screen.getByText(validInputs.tipPercent));
     await user.click(screen.getByRole("button", { name: "Reset" }));
 
     const billInput = screen.queryByLabelText("Bill") as HTMLInputElement;
